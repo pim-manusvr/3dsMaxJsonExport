@@ -1,9 +1,11 @@
 try(destroyDialog ManusVRJSONTool)catch()
 rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 (
-	editText lbl_name "Name  " pos:[8,8] width:164 height:16
-	checkbox chk_legacy "Legacy" pos:[178,8] width:64 height:16 checked:true
+	editText lbl_name "Name: " pos:[8,8] width:164 height:16
+	checkbox chk_legacy "Legacy" pos:[178,8] width:64 height:16 checked:false
 	button export_json "Export JSON" pos:[8,32] width:224 height:32
+
+	global bones_array
 
 	global json
 
@@ -23,6 +25,8 @@ rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 	global export_file
 	global out_file
 
+	global bonesmissing = false
+
 	fn fnDateTime datetime = (
 		time = getLocalTime()
 		year = time[1] as string
@@ -37,6 +41,18 @@ rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 		if minute.count < 2 do ( minute = "0" + minute)
 
 		datetime = (year + "/" + month + "/" + day + " " + hour + ":" + minute)
+	)
+
+	fn fnCheckBones = (
+		global bones_array = #($hand_l, $hand_r, $thumb_01_l, $thumb_01_r, $thumb_02_l, $thumb_02_r, $thumb_03_l, $thumb_03_r, $index_01_l, $index_01_r, $index_02_l, $index_02_r, $index_03_l, $index_03_r, $middle_01_l, $middle_01_r, $middle_02_l, $middle_02_r, $middle_03_l, $middle_03_r, $ring_01_l, $ring_01_r, $ring_02_l, $ring_02_r, $ring_03_l, $ring_03_r, $pinky_01_l, $pinky_01_r, $pinky_02_l, $pinky_02_r, $pinky_03_l, $pinky_03_r)
+
+		for i = 1 to bones_array.count do
+		(
+			if bones_array[i] == undefined then 
+			(
+				bonesmissing = true
+			)
+		)
 	)
 
 	fn fnGetQuaternionsOpen = (
@@ -1514,35 +1530,1079 @@ rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 	\"upperArmLength\": " + conversion_array[1] + ",
 	\"upperNeckLength\": " + upper_neck_length_default + ",
 	\"upperNeckOffset\": {
-		\"x\": " + upper_neck_offset_x_legacy_default + ",
-		\"y\": " + upper_neck_offset_y_legacy_default + ",
-		\"z\": " + upper_neck_offset_z_legacy_default + "
+		\"x\": " + upper_neck_offset_x_default + ",
+		\"y\": " + upper_neck_offset_y_default + ",
+		\"z\": " + upper_neck_offset_z_default + "
 	}
 }"
 )
 
-	on ManusVRJSONTool open do
-	(
-		lbl_name.text = fnDateTime datetime
-	)
+	fn fnJSON = (
+		json =
+"{
+	\"profiles\": [
+		{
+			\"Left\": {
+				\"index\": [
+					{
+						\"length\": 0.10236,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03978,
+						\"rotation_0\": {
+							\"w\": " + index_01_l_rotation_w_start + ",
+							\"x\": " + index_01_l_rotation_x_start + ",
+							\"y\": " + index_01_l_rotation_y_start + ",
+							\"z\": " + index_01_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_01_l_rotation_w_end + ",
+							\"x\": " + index_01_l_rotation_x_end + ",
+							\"y\": " + index_01_l_rotation_y_end + ",
+							\"z\": " + index_01_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02238,
+						\"rotation_0\": {
+							\"w\": " + index_02_l_rotation_w_start + ",
+							\"x\": " + index_02_l_rotation_x_start + ",
+							\"y\": " + index_02_l_rotation_y_start + ",
+							\"z\": " + index_02_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_02_l_rotation_w_end + ",
+							\"x\": " + index_02_l_rotation_x_end + ",
+							\"y\": " + index_02_l_rotation_y_end + ",
+							\"z\": " + index_02_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01966,
+						\"rotation_0\": {
+							\"w\": " + index_03_l_rotation_w_start + ",
+							\"x\": " + index_03_l_rotation_x_start + ",
+							\"y\": " + index_03_l_rotation_y_start + ",
+							\"z\": " + index_03_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_03_l_rotation_w_end + ",
+							\"x\": " + index_03_l_rotation_x_end + ",
+							\"y\": " + index_03_l_rotation_y_end + ",
+							\"z\": " + index_03_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"middle\": [
+					{
+						\"length\": 0.09738,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04463,
+						\"rotation_0\": {
+							\"w\": " + middle_01_l_rotation_w_start + ",
+							\"x\": " + middle_01_l_rotation_x_start + ",
+							\"y\": " + middle_01_l_rotation_y_start + ",
+							\"z\": " + middle_01_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_01_l_rotation_w_end + ",
+							\"x\": " + middle_01_l_rotation_x_end + ",
+							\"y\": " + middle_01_l_rotation_y_end + ",
+							\"z\": " + middle_01_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02633,
+						\"rotation_0\": {
+							\"w\": " + middle_02_l_rotation_w_start + ",
+							\"x\": " + middle_02_l_rotation_x_start + ",
+							\"y\": " + middle_02_l_rotation_y_start + ",
+							\"z\": " + middle_02_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_02_l_rotation_w_end + ",
+							\"x\": " + middle_02_l_rotation_x_end + ",
+							\"y\": " + middle_02_l_rotation_y_end + ",
+							\"z\": " + middle_02_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02135,
+						\"rotation_0\": {
+							\"w\": " + middle_03_l_rotation_w_start + ",
+							\"x\": " + middle_03_l_rotation_x_start + ",
+							\"y\": " + middle_03_l_rotation_y_start + ",
+							\"z\": " + middle_03_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_03_l_rotation_w_end + ",
+							\"x\": " + middle_03_l_rotation_x_end + ",
+							\"y\": " + middle_03_l_rotation_y_end + ",
+							\"z\": " + middle_03_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"pinky\": [
+					{
+						\"length\": 0.08997,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03274,
+						\"rotation_0\": {
+							\"w\": " + pinky_01_l_rotation_w_start + ",
+							\"x\": " + pinky_01_l_rotation_x_start + ",
+							\"y\": " + pinky_01_l_rotation_y_start + ",
+							\"z\": " + pinky_01_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_01_l_rotation_w_end + ",
+							\"x\": " + pinky_01_l_rotation_x_end + ",
+							\"y\": " + pinky_01_l_rotation_y_end + ",
+							\"z\": " + pinky_01_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01811,
+						\"rotation_0\": {
+							\"w\": " + pinky_02_l_rotation_w_start + ",
+							\"x\": " + pinky_02_l_rotation_x_start + ",
+							\"y\": " + pinky_02_l_rotation_y_start + ",
+							\"z\": " + pinky_02_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_02_l_rotation_w_end + ",
+							\"x\": " + pinky_02_l_rotation_x_end + ",
+							\"y\": " + pinky_02_l_rotation_y_end + ",
+							\"z\": " + pinky_02_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01969,
+						\"rotation_0\": {
+							\"w\": " + pinky_03_l_rotation_w_start + ",
+							\"x\": " + pinky_03_l_rotation_x_start + ",
+							\"y\": " + pinky_03_l_rotation_y_start + ",
+							\"z\": " + pinky_03_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_03_l_rotation_w_end + ",
+							\"x\": " + pinky_03_l_rotation_x_end + ",
+							\"y\": " + pinky_03_l_rotation_y_end + ",
+							\"z\": " + pinky_03_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"ring\": [
+					{
+						\"length\": 0.09172,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04137,
+						\"rotation_0\": {
+							\"w\": " + ring_01_l_rotation_w_start + ",
+							\"x\": " + ring_01_l_rotation_x_start + ",
+							\"y\": " + ring_01_l_rotation_y_start + ",
+							\"z\": " + ring_01_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_01_l_rotation_w_end + ",
+							\"x\": " + ring_01_l_rotation_x_end + ",
+							\"y\": " + ring_01_l_rotation_y_end + ",
+							\"z\": " + ring_01_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02565,
+						\"rotation_0\": {
+							\"w\": " + ring_02_l_rotation_w_start + ",
+							\"x\": " + ring_02_l_rotation_x_start + ",
+							\"y\": " + ring_02_l_rotation_y_start + ",
+							\"z\": " + ring_02_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_02_l_rotation_w_end + ",
+							\"x\": " + ring_02_l_rotation_x_end + ",
+							\"y\": " + ring_02_l_rotation_y_end + ",
+							\"z\": " + ring_02_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02125,
+						\"rotation_0\": {
+							\"w\": " + ring_03_l_rotation_w_start + ",
+							\"x\": " + ring_03_l_rotation_x_start + ",
+							\"y\": " + ring_03_l_rotation_y_start + ",
+							\"z\": " + ring_03_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_03_l_rotation_w_end + ",
+							\"x\": " + ring_03_l_rotation_x_end + ",
+							\"y\": " + ring_03_l_rotation_y_end + ",
+							\"z\": " + ring_03_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"thumb\": [
+					{
+						\"length\": 0.04249,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04622,
+						\"rotation_0\": {
+							\"w\": " + thumb_01_l_rotation_w_start + ",
+							\"x\": " + thumb_01_l_rotation_x_start + ",
+							\"y\": " + thumb_01_l_rotation_y_start + ",
+							\"z\": " + thumb_01_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_01_l_rotation_w_end + ",
+							\"x\": " + thumb_01_l_rotation_x_end + ",
+							\"y\": " + thumb_01_l_rotation_y_end + ",
+							\"z\": " + thumb_01_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03157,
+						\"rotation_0\": {
+							\"w\": " + thumb_02_l_rotation_w_start + ",
+							\"x\": " + thumb_02_l_rotation_x_start + ",
+							\"y\": " + thumb_02_l_rotation_y_start + ",
+							\"z\": " + thumb_02_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_02_l_rotation_w_end + ",
+							\"x\": " + thumb_02_l_rotation_x_end + ",
+							\"y\": " + thumb_02_l_rotation_y_end + ",
+							\"z\": " + thumb_02_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02734,
+						\"rotation_0\": {
+							\"w\": " + thumb_03_l_rotation_w_start + ",
+							\"x\": " + thumb_03_l_rotation_x_start + ",
+							\"y\": " + thumb_03_l_rotation_y_start + ",
+							\"z\": " + thumb_03_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_03_l_rotation_w_end + ",
+							\"x\": " + thumb_03_l_rotation_x_end + ",
+							\"y\": " + thumb_03_l_rotation_y_end + ",
+							\"z\": " + thumb_03_l_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"wrist\": [
+					{
+						\"length\": 0.084784,
+						\"rotation_0\": {
+							\"w\": " + wrist_l_rotation_w_start + ",
+							\"x\": " + wrist_l_rotation_x_start + ",
+							\"y\": " + wrist_l_rotation_y_start + ",
+							\"z\": " + wrist_l_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				]
+			},
+			\"Right\": {
+				\"index\": [
+					{
+						\"length\": 0.10236,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03978,
+						\"rotation_0\": {
+							\"w\": " + index_01_r_rotation_w_start + ",
+							\"x\": " + index_01_r_rotation_x_start + ",
+							\"y\": " + index_01_r_rotation_y_start + ",
+							\"z\": " + index_01_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_01_r_rotation_w_end + ",
+							\"x\": " + index_01_r_rotation_x_end + ",
+							\"y\": " + index_01_r_rotation_y_end + ",
+							\"z\": " + index_01_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02238,
+						\"rotation_0\": {
+							\"w\": " + index_02_r_rotation_w_start + ",
+							\"x\": " + index_02_r_rotation_x_start + ",
+							\"y\": " + index_02_r_rotation_y_start + ",
+							\"z\": " + index_02_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_02_r_rotation_w_end + ",
+							\"x\": " + index_02_r_rotation_x_end + ",
+							\"y\": " + index_02_r_rotation_y_end + ",
+							\"z\": " + index_02_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01966,
+						\"rotation_0\": {
+							\"w\": " + index_03_r_rotation_w_start + ",
+							\"x\": " + index_03_r_rotation_x_start + ",
+							\"y\": " + index_03_r_rotation_y_start + ",
+							\"z\": " + index_03_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + index_03_r_rotation_w_end + ",
+							\"x\": " + index_03_r_rotation_x_end + ",
+							\"y\": " + index_03_r_rotation_y_end + ",
+							\"z\": " + index_03_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"middle\": [
+					{
+						\"length\": 0.09738,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04463,
+						\"rotation_0\": {
+							\"w\": " + middle_01_r_rotation_w_start + ",
+							\"x\": " + middle_01_r_rotation_x_start + ",
+							\"y\": " + middle_01_r_rotation_y_start + ",
+							\"z\": " + middle_01_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_01_r_rotation_w_end + ",
+							\"x\": " + middle_01_r_rotation_x_end + ",
+							\"y\": " + middle_01_r_rotation_y_end + ",
+							\"z\": " + middle_01_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02633,
+						\"rotation_0\": {
+							\"w\": " + middle_02_r_rotation_w_start + ",
+							\"x\": " + middle_02_r_rotation_x_start + ",
+							\"y\": " + middle_02_r_rotation_y_start + ",
+							\"z\": " + middle_02_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_02_r_rotation_w_end + ",
+							\"x\": " + middle_02_r_rotation_x_end + ",
+							\"y\": " + middle_02_r_rotation_y_end + ",
+							\"z\": " + middle_02_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02135,
+						\"rotation_0\": {
+							\"w\": " + middle_03_r_rotation_w_start + ",
+							\"x\": " + middle_03_r_rotation_x_start + ",
+							\"y\": " + middle_03_r_rotation_y_start + ",
+							\"z\": " + middle_03_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + middle_03_r_rotation_w_end + ",
+							\"x\": " + middle_03_r_rotation_x_end + ",
+							\"y\": " + middle_03_r_rotation_y_end + ",
+							\"z\": " + middle_03_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"pinky\": [
+					{
+						\"length\": 0.08997,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03274,
+						\"rotation_0\": {
+							\"w\": " + pinky_01_r_rotation_w_start + ",
+							\"x\": " + pinky_01_r_rotation_x_start + ",
+							\"y\": " + pinky_01_r_rotation_y_start + ",
+							\"z\": " + pinky_01_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_01_r_rotation_w_end + ",
+							\"x\": " + pinky_01_r_rotation_x_end + ",
+							\"y\": " + pinky_01_r_rotation_y_end + ",
+							\"z\": " + pinky_01_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01811,
+						\"rotation_0\": {
+							\"w\": " + pinky_02_r_rotation_w_start + ",
+							\"x\": " + pinky_02_r_rotation_x_start + ",
+							\"y\": " + pinky_02_r_rotation_y_start + ",
+							\"z\": " + pinky_02_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_02_r_rotation_w_end + ",
+							\"x\": " + pinky_02_r_rotation_x_end + ",
+							\"y\": " + pinky_02_r_rotation_y_end + ",
+							\"z\": " + pinky_02_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.01969,
+						\"rotation_0\": {
+							\"w\": " + pinky_03_r_rotation_w_start + ",
+							\"x\": " + pinky_03_r_rotation_x_start + ",
+							\"y\": " + pinky_03_r_rotation_y_start + ",
+							\"z\": " + pinky_03_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + pinky_03_r_rotation_w_end + ",
+							\"x\": " + pinky_03_r_rotation_x_end + ",
+							\"y\": " + pinky_03_r_rotation_y_end + ",
+							\"z\": " + pinky_03_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"ring\": [
+					{
+						\"length\": 0.09172,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04137,
+						\"rotation_0\": {
+							\"w\": " + ring_01_r_rotation_w_start + ",
+							\"x\": " + ring_01_r_rotation_x_start + ",
+							\"y\": " + ring_01_r_rotation_y_start + ",
+							\"z\": " + ring_01_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_01_r_rotation_w_end + ",
+							\"x\": " + ring_01_r_rotation_x_end + ",
+							\"y\": " + ring_01_r_rotation_y_end + ",
+							\"z\": " + ring_01_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02565,
+						\"rotation_0\": {
+							\"w\": " + ring_02_r_rotation_w_start + ",
+							\"x\": " + ring_02_r_rotation_x_start + ",
+							\"y\": " + ring_02_r_rotation_y_start + ",
+							\"z\": " + ring_02_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_02_r_rotation_w_end + ",
+							\"x\": " + ring_02_r_rotation_x_end + ",
+							\"y\": " + ring_02_r_rotation_y_end + ",
+							\"z\": " + ring_02_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02125,
+						\"rotation_0\": {
+							\"w\": " + ring_03_r_rotation_w_start + ",
+							\"x\": " + ring_03_r_rotation_x_start + ",
+							\"y\": " + ring_03_r_rotation_y_start + ",
+							\"z\": " + ring_03_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + ring_03_r_rotation_w_end + ",
+							\"x\": " + ring_03_r_rotation_x_end + ",
+							\"y\": " + ring_03_r_rotation_y_end + ",
+							\"z\": " + ring_03_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.0,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"thumb\": [
+					{
+						\"length\": 0.04249,
+						\"rotation_0\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.04622,
+						\"rotation_0\": {
+							\"w\": " + thumb_01_r_rotation_w_start + ",
+							\"x\": " + thumb_01_r_rotation_x_start + ",
+							\"y\": " + thumb_01_r_rotation_y_start + ",
+							\"z\": " + thumb_01_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_01_r_rotation_w_end + ",
+							\"x\": " + thumb_01_r_rotation_x_end + ",
+							\"y\": " + thumb_01_r_rotation_y_end + ",
+							\"z\": " + thumb_01_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.03157,
+						\"rotation_0\": {
+							\"w\": " + thumb_02_r_rotation_w_start + ",
+							\"x\": " + thumb_02_r_rotation_x_start + ",
+							\"y\": " + thumb_02_r_rotation_y_start + ",
+							\"z\": " + thumb_02_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_02_r_rotation_w_end + ",
+							\"x\": " + thumb_02_r_rotation_x_end + ",
+							\"y\": " + thumb_02_r_rotation_y_end + ",
+							\"z\": " + thumb_02_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					},
+					{
+						\"length\": 0.02734,
+						\"rotation_0\": {
+							\"w\": " + thumb_03_r_rotation_w_start + ",
+							\"x\": " + thumb_03_r_rotation_x_start + ",
+							\"y\": " + thumb_03_r_rotation_y_start + ",
+							\"z\": " + thumb_03_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": " + thumb_03_r_rotation_w_end + ",
+							\"x\": " + thumb_03_r_rotation_x_end + ",
+							\"y\": " + thumb_03_r_rotation_y_end + ",
+							\"z\": " + thumb_03_r_rotation_z_end + "
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				],
+				\"wrist\": [
+					{
+						\"length\": 0.084784,
+						\"rotation_0\": {
+							\"w\": " + wrist_r_rotation_w_start + ",
+							\"x\": " + wrist_r_rotation_x_start + ",
+							\"y\": " + wrist_r_rotation_y_start + ",
+							\"z\": " + wrist_r_rotation_z_start + "
+						},
+						\"rotation_1\": {
+							\"w\": 1,
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						},
+						\"translation\": {
+							\"x\": 0.0,
+							\"y\": 0.0,
+							\"z\": 0.0
+						}
+					}
+				]
+			},
+			\"iterations\": " + iterations_default + ",
+			\"lowerArmLength\": " + conversion_array[2] + ",
+			\"lowerNeckLength\": " + lower_neck_length_default + ",
+			\"name\": \"" + lbl_name.text + "\",
+			\"shoulderLength\": " + conversion_array[3] + ",
+			\"upperArmLength\": " + conversion_array[1] + ",
+			\"upperNeckLength\": " + upper_neck_length_default + ",
+			\"upperNeckOffset\": {
+				\"x\": " + upper_neck_offset_x_default + ",
+				\"y\": " + upper_neck_offset_y_default + ",
+				\"z\": " + upper_neck_offset_z_default + "
+			}
+		}
+	],
+	\"version\": 2
+}
+"
+)
 
-	on export_json pressed do
-	(
-		fnGetQuaternionsOpen()
-		fnGetQuaternionsClosed()
+	fn fnExport = (
+		if bonesmissing == true then
+		(
+			messagebox "Not all required bones are found in the scene.
+Use the default Manus VR bone system when exporting an animation file." title: " Not all required bones are found in the scene"
+		)
+		else
+		(
+			fnGetQuaternionsOpen()
+			fnGetQuaternionsClosed()
 
-		if chk_legacy.checked == true then (
 			global iterations_default = "10"
 			global lower_neck_length_default = "0.17"
 			global upper_neck_length_default = "0.20"
-			
-			global upper_neck_offset_x_legacy_default = "0.00"
-			global upper_neck_offset_y_legacy_default = "0.05"
-			global upper_neck_offset_z_legacy_default = "0.16"
-
-			global upper_neck_offset_x_default = "0.00"
-			global upper_neck_offset_y_default = "0.05"
-			global upper_neck_offset_z_default = "0.16"
 
 			-- Calculate lengths
 			global upper_arm_length_calculated = distance $upperarm_r $lowerarm_r
@@ -1561,17 +2621,56 @@ rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 
 			units.DisplayType = #Generic
 
-			fnJSONLegacy()
-		)
-		else (
-			json = "modern"
-		)
+			if chk_legacy.checked == true then (
+				global upper_neck_offset_x_default = "0.0"
+				global upper_neck_offset_y_default = "0.05"
+				global upper_neck_offset_z_default = "0.16"
 
-		global export_file = systemTools.getEnvVariable("AppData") + "/ManusVR/body_test.json"
+				fnJSONLegacy()
+			)
+			else (
+				global upper_neck_offset_x_default = "0.0"
+				global upper_neck_offset_y_default = "0.22"
+				global upper_neck_offset_z_default = "0.16"
+				
+				fnJSON()
+			)
 
-		global out_file = createfile ((export_file))
-		format json to:out_file
-		close out_file
+			global export_file = systemTools.getEnvVariable("AppData") + "/ManusVR/body.json"
+
+			global out_file = createfile ((export_file))
+			format json to:out_file
+			close out_file
+		)
+	)
+
+	on ManusVRJSONTool open do
+	(
+		lbl_name.text = fnDateTime datetime
+
+		fnCheckBones()
+	)
+
+	on export_json pressed do
+	(
+		fnCheckBones()
+		fnExport()
+	)
+
+	on chk_legacy changed legacy_state do
+	(
+		if legacy_state == true then
+		(
+			lbl_name.readOnly = true
+			lbl_name.text = "  disabled in legacy  "
+			lbl_name.bold = true
+		)
+		else
+		(
+			lbl_name.readOnly = false
+			lbl_name.text = fnDateTime datetime
+			lbl_name.bold = false
+		)
 	)
 )
 
