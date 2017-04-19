@@ -5,6 +5,8 @@ rollout ManusVRJSONTool "Manus VR - Export JSON" width:240 height:72
 	checkbox chk_legacy "Legacy" pos:[178,8] width:64 height:16 checked:false
 	button export_json "Export JSON" pos:[8,32] width:224 height:32
 
+	global ManusVRJSONToolVersion = "Manus VR - JSON Tool 0.1 alpha"
+
 	global bones_array
 
 	global json
@@ -2646,6 +2648,8 @@ Use the default Manus VR bone system when exporting an animation file." title: "
 
 	on ManusVRJSONTool open do
 	(
+		format "%\r" ManusVRJSONToolVersion
+
 		lbl_name.text = fnDateTime datetime
 
 		fnCheckBones()
